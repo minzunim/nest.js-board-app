@@ -26,6 +26,7 @@ export class BoardsService {
 
   getBoardById(id: string): Board {
     const found = this.boards.find((board) => board.id === id);
+    // 없는 게시물을 찾으려고 할 때 에러 발생
     if (!found) {
       throw new NotFoundException(`Can't find Board with id ${id}`);
     }
@@ -33,7 +34,9 @@ export class BoardsService {
   }
 
   deleteBoard(id: string): void {
-    this.boards = this.boards.filter((board) => board.id !== id);
+    // 게시물이 있으면 지움 (위에서 에러 처리해서 여기서는 할 필요 없음)
+    const found = this.getBoardById(id);
+    this.boards = this.boards.filter((board) => board.id !== found.id);
   }
 
   updateBoard(id: string, status: BoardStatus): Board {
